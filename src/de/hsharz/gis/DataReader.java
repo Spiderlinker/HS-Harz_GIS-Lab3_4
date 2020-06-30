@@ -24,17 +24,17 @@ public class DataReader {
      * Diese Methode liefert die in der angegebenen Datei {@code file} enthaltenen Messwerte in einem 2d-Array.
      * Die Datei muss dabei nach folgendem Schema aufgebaut sein:
      *      <Anzahl Messwerte [Int]>
-     *      <Bezeichnung Messwert1 [String]>    <Bezeichnung Messwert2 [String]>    <Bezeichnung Messwert3 [String]>
-     *      <Datensatz1_Messwert1 [Int/Double]> <Datensatz1_Messwert2 [Int/Double]> <Datensatz1_Messwert3 [Int/Double]>
-     *      <Datensatz1_Messwert2 [Int/Double]> <Datensatz2_Messwert2 [Int/Double]> <Datensatz2_Messwert3 [Int/Double]>
+     *      <Bezeichnung X-Koordinate [String]>    <Bezeichnung Y-Koordinate [String]>    <Bezeichnung Messwert [String]>
+     *      <Datensatz1_X-Koordinate [Int/Double]> <Datensatz1_Y-Koordinate [Int/Double]> <Datensatz1_Messwert [Int/Double]>
+     *      <Datensatz1_X-Koordinate [Int/Double]> <Datensatz2_Y-Koordinate [Int/Double]> <Datensatz2_Messwert [Int/Double]>
      *                  ...                                     ...                                 ...
-     *      <Datensatzn_Messwert2 [Int/Double]> <Datensatzn_Messwert2 [Int/Double]> <Datensatzn_Messwert3 [Int/Double]>
+     *      <Datensatzn_X-Koordinate [Int/Double]> <Datensatzn_Y-Koordinate [Int/Double]> <Datensatzn_Messwert [Int/Double]>
      *
      * Falls das vorgegebene Dateiformat nicht eingehalten wird,
      * kann es zu fehlerhaftem Verhalten bzw. zur Erzeugung eines Fehlers kommen.
      *
      * Der Rückgabetyp ist ein 2d-Array. Dieses ist nach folgender Struktur aufgebaut:
-     * double[DatensatzX][{Messwert1, Messwert2, Messwert3}]
+     * double[DatensatzX][{X-Koordinate, Y-Koordinate, Messwert3}]
      *
      * @param file Datei mit Messwerten, die eingelesen werden soll
      * @return Eingelesene Messwerte
@@ -57,7 +57,7 @@ public class DataReader {
 
             // Einlesen der Messwerte
             for (int i = 0; i < values.length; i++) {
-                // Alle drei Messwerte lesen und an die i-te Stelle des values-Arrays schreiben
+                // X-, Y-Koordinate und Messwert lesen und an die i-te Stelle des values-Arrays schreiben
                 values[i] = new double[] { scanner.nextDouble(), scanner.nextDouble(), scanner.nextDouble() };
             }
         }
