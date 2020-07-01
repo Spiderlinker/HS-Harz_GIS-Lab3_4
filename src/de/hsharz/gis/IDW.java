@@ -1,6 +1,7 @@
 package de.hsharz.gis;
 
 import java.awt.geom.Point2D;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class IDW {
@@ -22,6 +23,15 @@ public class IDW {
      */
     public IDW(final double[][] values) {
         this.values = Objects.requireNonNull(values);
+    }
+
+    /**
+     * @return Liefert eine Kopie des Werte-Arrays
+     */
+    public double[][] getValues() {
+        // Nur eine Kopie zurückgeben, damit von außen
+        // keine Werte im Array verändert werden können
+        return Arrays.copyOf(this.values, this.values.length);
     }
 
     /**
