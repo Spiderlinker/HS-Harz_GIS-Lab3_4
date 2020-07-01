@@ -1,25 +1,28 @@
 package de.hsharz.gis;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 
-public class Labor {
+import de.hsharz.gis.ui.MainWindow;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
+public class Labor extends Application {
 
     public static void main(final String[] args) throws FileNotFoundException {
-        double[][] values = DataReader.readValues(new File(
-                "C:\\Users\\Oliver\\Daten\\Uni\\HS Harz (Wernigerode)\\4. Semester\\Geoinformationssysteme und -dienste\\Labore\\Labor IIIb,IV\\IDW-Studierende\\xyw1.txt"));
+        launch(args);
+    }
 
-        IDW idw = new IDW(values);
-        System.out.println(idw.getValueOfPoint(32748635.25, 5743384.25));
+    @Override
+    public void start(final Stage stage) throws Exception {
 
-        double xMin = Arrays.stream(values).mapToDouble(v -> v[0]).min().getAsDouble();
-        double xMax = Arrays.stream(values).mapToDouble(v -> v[0]).max().getAsDouble();
-        double yMin = Arrays.stream(values).mapToDouble(v -> v[1]).min().getAsDouble();
-        double yMax = Arrays.stream(values).mapToDouble(v -> v[1]).max().getAsDouble();
+        BorderPane root = new BorderPane(new MainWindow(stage).getPane());
+        Scene scene = new Scene(root, 1000, 600);
+        stage.setScene(scene);
 
-        System.out.println("Size: " + (xMax - xMin) + "x" + (yMax - yMin));
-
+        stage.setOnCloseRequest(e -> System.exit(0));
+        stage.show();
     }
 
 }
