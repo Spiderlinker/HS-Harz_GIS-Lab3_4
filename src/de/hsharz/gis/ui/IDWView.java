@@ -5,10 +5,13 @@ import java.util.Objects;
 
 import de.hsharz.gis.IDW;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 
@@ -20,6 +23,13 @@ public class IDWView {
     private BorderPane         root;
     private ImageView          imageView;
     private Tooltip            tooltipValue;
+
+    private HBox               boxCalculateValue;
+    private TextField          fldXCoordiante;
+    private TextField          fldYCoordiante;
+    private TextField          fldResultValue;
+
+    private Button             btnCalculate;
 
     private IDW                idw;
     private BufferedImage      calculatedImage;
@@ -73,9 +83,33 @@ public class IDWView {
 
         this.tooltipValue = new Tooltip();
         this.tooltipValue.setFont(new Font(16));
+
+        this.boxCalculateValue = new HBox(20);
+
+        this.fldXCoordiante = new TextField();
+        this.fldXCoordiante.setPromptText("X-Koordinate");
+
+        this.fldYCoordiante = new TextField();
+        this.fldYCoordiante.setPromptText("Y-Koordinate");
+
+        this.fldResultValue = new TextField();
+        this.fldResultValue.setPromptText("Wert");
+        this.fldResultValue.setEditable(false);
+
+        this.btnCalculate = new Button("Wert schätzen");
     }
 
     private void setupInteractions() {
+
+        this.btnCalculate.setOnAction(event -> {
+            try {
+                double x = Double.valueOf(this.fldXCoordiante.getText());
+                double y = Double.valueOf(this.fldYCoordiante.getText());
+                this.fldResultValue.setText(String.valueOf(this.idw.getValueOfPoint(x, y)));
+            } catch (NumberFormatException e) {
+                this.fldResultValue.setText("Fehlerhafte Eingabe");
+            }
+        });
 
         // Tooltip beim Betreten des Bildes anzeigen
         this.imageView.setOnMouseEntered(
@@ -88,7 +122,8 @@ public class IDWView {
 
             int x = (int) event.getX();
             int y = (int) event.getY();
-            this.tooltipValue.setText(String.format("Wert: %.2f", this.allValues[x][y]));
+            this.tooltipValue.setText(String.format("Wert: %.2f (x:%.0f, y:%.0f)", this.allValues[x][y],
+                    x + this.minXCoordinate - IMAGE_OFFSET, y + this.minYCoordinate - IMAGE_OFFSET));
         });
 
         // Tooltip verstecken, sobald Bild verlassen wird
@@ -96,6 +131,10 @@ public class IDWView {
     }
 
     private void addWidgets() {
+        this.boxCalculateValue.getChildren().addAll(this.fldXCoordiante, this.fldYCoordiante, this.fldResultValue,
+                this.btnCalculate);
+
+        this.root.setTop(this.boxCalculateValue);
         this.root.setCenter(new ScrollPane(this.imageView));
     }
 
